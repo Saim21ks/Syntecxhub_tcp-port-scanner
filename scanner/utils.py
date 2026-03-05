@@ -1,12 +1,26 @@
-def validate_port_range(port_range):
+def validate_port_range(port_input):
     try:
-        start, end = port_range.split("-")
-        start = int(start)
-        end = int(end)
+        # Case 1: Specific ports (22,80,443)
+        if "," in port_input:
+            ports = [int(p.strip()) for p in port_input.split(",")]
+            return ports
 
-        if start < 1 or end > 65535 or start > end:
-            raise ValueError
+        # Case 2: Port range (20-80)
+        if "-" in port_input:
+            start, end = port_input.split("-")
+            start = int(start)
+            end = int(end)
 
-        return start, end
+            if start < 1 or end > 65535 or start > end:
+                raise ValueError
+
+            return list(range(start, end + 1))
+
+        # Case 3: Single port
+        port = int(port_input)
+        return [port]
+
     except Exception:
-        raise ValueError("Invalid port range. Use format: 20-80")
+        raise ValueError(
+            "Invalid port input. Use formats: 80 | 20-80 | 22,80,443"
+        )
