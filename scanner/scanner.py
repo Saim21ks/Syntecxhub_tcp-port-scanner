@@ -31,23 +31,27 @@ def scan_port(host, port, timeout):
 
 def run_scan():
     parser = argparse.ArgumentParser(description="Multithreaded TCP Port Scanner")
+
     parser.add_argument("host", help="Target host (IP or domain)")
-    parser.add_argument("-p", "--ports", required=True, help="Port range (e.g., 20-80)")
+    parser.add_argument("-p", "--ports", required=True, help="Port range (e.g., 20-80 or 22,80,443)")
     parser.add_argument("-t", "--timeout", type=float, default=1)
     parser.add_argument("-th", "--threads", type=int, default=100)
 
     args = parser.parse_args()
 
-    start_port, end_port = validate_port_range(args.ports)
+    ports = validate_port_range(args.ports)
 
-    print(f"\nScanning {args.host} ({start_port}-{end_port})")
+    print(f"\nScanning {args.host}")
+    print(f"Ports: {ports}")
     print(f"Start time: {datetime.now()}\n")
 
     with ThreadPoolExecutor(max_workers=args.threads) as executor:
-        futures = [
-            executor.submit(scan_port, args.host, port, args.timeout)
-            for port in range(start_port, end_port + 1)
-        ]
+        futures = []
+
+        for port in ports:
+            futures.append(
+                executor.submit(scan_port, args.host, port, args.timeout)
+            )
 
         for future in futures:
             print(future.result())
