@@ -16,7 +16,7 @@ A fast, concurrent TCP port scanner built in Python using socket programming and
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/yourusername/tcp-port-scanner.git
+git clone https://github.com/Saim21ks/Syntecxhub_tcp-port-scanner.git
 cd tcp-port-scanner
 ```
 
@@ -65,3 +65,4 @@ Unauthorized scanning is illegal.
 ## 👨‍💻 Author
 
 Mohamed Saim
+
